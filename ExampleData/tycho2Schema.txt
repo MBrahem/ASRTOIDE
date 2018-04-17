@@ -1,0 +1,1 @@
+TYC1,pflag,ramdeg,demdeg,pmra,pmde,e_ramdeg,e_demdeg,e_pmra,e_pmde,EpRAm,EpDEm,Num,q_RAmdeg,q_DEmdeg,q_pmRA,q_pmDE,BTmag,e_BTmag,VTmag,e_VTmag,prox,HIP,CCDM,ra,dec,EpRA-1990,EpDE-1990,e_RAdeg,e_DEdeg,posflg,corr
