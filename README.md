@@ -243,7 +243,7 @@ Given a dataFrame representing the first dataset, this class execute a crossmatc
 This produces a new dataframe called output which is the result of crossmatching two input dataframes. 
 
 
-##Publications
+## Publications
 
 1. BRAHEM, Mariem, ZEITOUNI, Karine, et YEH, Laurent. HX-MATCH:
 In-Memory Cross-Matching Algorithm for Astronomical Big Data. In :
