@@ -243,5 +243,17 @@ Given a dataFrame representing the first dataset, this class execute a crossmatc
 This produces a new dataframe called output which is the result of crossmatching two input dataframes. 
 
 
+##Publications
+
+1. BRAHEM, Mariem, ZEITOUNI, Karine, et YEH, Laurent. HX-MATCH:
+In-Memory Cross-Matching Algorithm for Astronomical Big Data. In :
+International Symposium on Spatial and Temporal Databases. Springer,
+Cham, 2017. p. 411-415.
+
+2. BRAHEM, Mariem, LOPES, Stephane, YEH, Laurent, et al. AstroSpark:
+towards a distributed data server for big data in astronomy. In : Proceedings
+of the 3rd ACM SIGSPATIAL PhD Symposium. ACM, 2016. p. 3.
+
+
 
 
