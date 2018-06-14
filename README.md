@@ -16,9 +16,9 @@ Current version works with Spark 2.2.x
 
 - Add jars in conf/spark-defaults.conf by adding these lines:
 
-	    spark.driver.extraClassPath /libs/healpix-1.0.jar.jar:/fullpath/adql1.3.jar
+	    spark.driver.extraClassPath /libs/healpix-1.0.jar:/fullpath/adql1.3.jar
     
-    	spark.executor.extraClassPath /libs/healpix-1.0.jar.jar:/fullpath/adql1.3.jar
+    	spark.executor.extraClassPath /libs/healpix-1.0.jar:/fullpath/adql1.3.jar
     
 These libraries already exists in `/libs` directory, for more details please refer to:
 
@@ -125,7 +125,7 @@ After data partitioning, you can start executing astronomical queries using ADQL
 ASTROIDE supports ADQL Standard. It includes three kinds of astronomical operators as follows. All these operators can be directly passed to astroide throught *queryFile*
 
 
-    spark-submit --class fr.uvsq.adam.astroide.executor.AstroideQueries <application-jar> <file1> <file2> <healpixOrder> <queryFile> <action>
+    spark-submit --class fr.uvsq.adam.astroide.executor.AstroideQueries --master <master-url> <astroide.jar> <file1> <file2> <healpixOrder> <queryFile> <action>
     
 
 > For KNN & ConeSearch queries 
