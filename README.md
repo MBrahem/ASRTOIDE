@@ -7,12 +7,12 @@ ASTROIDE introduces effective methods for efficient astronomical query execution
 data partitioning with HEALPix and customized optimizer. ASTROIDE offers a simple, expressive and 
 unified interface through ADQL, a standard language for querying  databases in astronomy. 
 
-Current version works with Spark 2.2.x
+We are in the process of making our source code open.  
 
 # Requirements
 
 
-- This version requires Spark 2.2+ installed and Scala 2.11.
+- This version requires Spark 2.2.x installed, Scala 2.11 and Hadoop 2.7+.
 
 - Add jars in conf/spark-defaults.conf by adding these lines:
 
