@@ -51,7 +51,7 @@ Partitioning is a mandatory  process for executing astronomical queries efficien
 
 Using ASTROIDE, partitioning is executed as follows:
 
-	spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner --master <master-url> <astroide.jar> -fs <hdfs> <schema> <inputFile> <separator> <outputFile.parquet> <partitionSize> <healpixOrder> <name_coordinates1> <name_coordinates2> <boundariesFile>
+	spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner --master <master-url> <astroide.jar> -fs <hdfs> [<schema>] <inputFile> <separator> <outputFile.parquet> <partitionSize> <healpixOrder> <name_coordinates1> <name_coordinates2> <boundariesFile>
 
 The above line can be explained as:
 
@@ -83,7 +83,11 @@ Please precise a path to a local file on your master node.
 
 Example:
 
-	spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner --master spark://UbuntuMaster:7077 $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://UbuntuMaster:9000 /data/gaia.csv "," /partitioned/gaia.parquet 256 12 ra dec $ASTROIDE_HOME/gaia.txt
+	spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner --master spark://UbuntuMaster:7077 $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://UbuntuMaster:9000 /data/gaia.csv "," /partitioned/gaia.parquet 32 12 ra dec $ASTROIDE_HOME/gaia.txt
+
+Or using schema:
+
+	spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner --master spark://UbuntuMaster:7077 $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://UbuntuMaster:9000 $ASTROIDE_HOME/ExampleData/tycho2Schema.txt /data/tycho2.gz "|" /partitioned/tycho2.parquet 32 12 ra dec $ASTROIDE_HOME/tycho2.txt
 
 
 ASTROIDE retrieves partition boundaries and stores them as metadata. Note that in our case, all we need to store are the three values (n, l, u) where n is the partition number, l is
