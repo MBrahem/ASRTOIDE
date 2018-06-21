@@ -16,11 +16,13 @@ We are in the process of making our source code open.
 
 - Initialize an environment variable called `ASTROIDE_HOME` to include the directory where you cloned this repository
 
+        export ASTROIDE_HOME=/home/hadoop/ASTROIDE-master/
+    
 - Add jars in conf/spark-defaults.conf by adding these lines:
 
-	    spark.driver.extraClassPath $ASTROIDE_HOME/libs/healpix-1.0.jar:$ASTROIDE_HOME/libs/adql1.3.jar
+	    spark.driver.extraClassPath <ASTROIDE_HOME>/libs/healpix-1.0.jar:<ASTROIDE_HOME>/libs/adql1.3.jar
     
-    	spark.executor.extraClassPath $ASTROIDE_HOME/libs/healpix-1.0.jar:$ASTROIDE_HOME/libs/adql1.3.jar
+    	spark.executor.extraClassPath <ASTROIDE_HOME>/libs/healpix-1.0.jar:<ASTROIDE_HOME>/libs/adql1.3.jar
     
 These libraries already exists in `/libs` directory, for more details please refer to:
 
@@ -37,7 +39,13 @@ These libraries already exists in `/libs` directory, for more details please ref
 
 ASTROIDE supports reading ONLY input format csv or compressed csv.
 
-You can download example of astronomical data [here](https://github.com/MBrahem/ASTROIDE/tree/master/ExampleData) or all GAIA DR1 [here](http://cdn.gea.esac.esa.int/Gaia/gdr1/gaia_source/csv/).
+You can download example of astronomical data [here](https://github.com/MBrahem/ASTROIDE/tree/master/ExampleData) or all GAIA DR1 [here](http://cdn.gea.esac.esa.int/Gaia/gdr1/gaia_source/csv/) and put downloaded files in HDFS.
+
+Example:
+
+    hadoop fs -put $ASTROIDE_HOME/ExampleData/gaia.csv /data
+    
+    hadoop fs -put $ASTROIDE_HOME/ExampleData/gaia.csv /data
 
 ASTROIDE allows users to use data whose coordinates are expressed according to the International Celestial Reference System [ICRS](https://hpiers.obspm.fr/icrs-pc/icrs/icrs.html)
 
