@@ -12,13 +12,15 @@ We are in the process of making our source code open.
 # Requirements
 
 
-- This version requires Spark 2.2.x installed, Scala 2.11 and Hadoop 2.7+.
+- This version requires Spark 2.2.x and Hadoop 2.7+ installed .
+
+- Initialize an environment variable called `ASTROIDE_HOME` to include the directory where you cloned this repository
 
 - Add jars in conf/spark-defaults.conf by adding these lines:
 
-	    spark.driver.extraClassPath /libs/healpix-1.0.jar:/fullpath/adql1.3.jar
+	    spark.driver.extraClassPath $ASTROIDE_HOME/libs/healpix-1.0.jar:$ASTROIDE_HOME/libs/adql1.3.jar
     
-    	spark.executor.extraClassPath /libs/healpix-1.0.jar:/fullpath/adql1.3.jar
+    	spark.executor.extraClassPath $ASTROIDE_HOME/libs/healpix-1.0.jar:$ASTROIDE_HOME/libs/adql1.3.jar
     
 These libraries already exists in `/libs` directory, for more details please refer to:
 
@@ -29,11 +31,13 @@ These libraries already exists in `/libs` directory, for more details please ref
 - [ADQL library 1.3](http://cdsportal.u-strasbg.fr/adqltuto/download.html)
 
 
+
+
 ## Input Data 
 
 ASTROIDE supports reading ONLY input format csv or compressed csv.
 
-You can download example of astronomical data [here](http://cdn.gea.esac.esa.int/Gaia/gaia_source/csv/).
+You can download example of astronomical data [here](https://github.com/MBrahem/ASTROIDE/tree/master/ExampleData) or all GAIA DR1 [here](http://cdn.gea.esac.esa.int/Gaia/gdr1/gaia_source/csv/).
 
 ASTROIDE allows users to use data whose coordinates are expressed according to the International Celestial Reference System [ICRS](https://hpiers.obspm.fr/icrs-pc/icrs/icrs.html)
 
@@ -79,7 +83,7 @@ Please precise a path to a local file on your master node.
 
 Example:
 
-	spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner --master spark://UbuntuMaster:7077 /home/user/astroide/ProjectJar/astroide.jar -fs hdfs://UbuntuMaster:9000 /data/gaia.csv "," /partitioned/gaia.parquet 256 12 ra dec /home/user/boundaries/gaia.txt
+	spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner --master spark://UbuntuMaster:7077 $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://UbuntuMaster:9000 /data/gaia.csv "," /partitioned/gaia.parquet 256 12 ra dec $ASTROIDE_HOME/gaia.txt
 
 
 ASTROIDE retrieves partition boundaries and stores them as metadata. Note that in our case, all we need to store are the three values (n, l, u) where n is the partition number, l is
@@ -125,7 +129,7 @@ After data partitioning, you can start executing astronomical queries using ADQL
 ASTROIDE supports ADQL Standard. It includes three kinds of astronomical operators as follows. All these operators can be directly passed to astroide throught *queryFile*
 
 
-    spark-submit --class fr.uvsq.adam.astroide.executor.AstroideQueries --master <master-url> <astroide.jar> <file1> <file2> <healpixOrder> <queryFile> <action>
+    spark-submit --class fr.uvsq.adam.astroide.executor.AstroideQueries --master <master-url> <astroide.jar> -fs <hdfs> <file1> <file2> <healpixOrder> <queryFile> <action>
     
 
 > For KNN & ConeSearch queries 
@@ -167,11 +171,20 @@ If no action is defined, ASTROIDE will show only the execution plan.
 If no action is defined, ASTROIDE will show only the execution plan.
 
 
+Example:
+
+
+	spark-submit --class fr.uvsq.adam.astroide.executor.AstroideQueries --master spark://UbuntuMaster:7077 $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://UbuntuMaster:9000 /partitioned/gaia.parquet $ASTROIDE_HOME/gaia.txt 12 $ASTROIDE_HOME/ExampleQuery/conesearch.txt show
+
+
+
+
 ## Queries Examples
 
 These are some correct ADQL queries that you can refer to test in ASTROIDE.
 
-You can save only one query in a text file and run your application using `fr.uvsq.adam.astroide.executor.AstroideQueries`
+You can save only one query in a text file and run your application using `fr.uvsq.adam.astroide.executor.AstroideQueries`. 
+
 
 ### ConeSearch Queries
 
