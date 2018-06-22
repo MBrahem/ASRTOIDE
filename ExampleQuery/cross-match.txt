@@ -1,1 +1,1 @@
-SELECT * FROM table JOIN table2 ON 1=CONTAINS(point('icrs',table.ra,table.dec),circle('icrs',table2.ra,table2.dec,0.01))
+SELECT table.ra as ra1, table.dec as dec1, table2.ra as ra2, table2.dec as dec2 FROM table JOIN table2 ON 1=CONTAINS(point('icrs',table.ra,table.dec),circle('icrs',table2.ra,table2.dec,0.01))

@@ -16,15 +16,21 @@ We are in the process of making our source code open.
 
 - Initialize an environment variable called `ASTROIDE_HOME` to include the directory where you cloned this repository
 
-        export ASTROIDE_HOME=/home/hadoop/ASTROIDE-master/
+		$ git clone https://github.com/MBrahem/ASTROIDE
+
+        $ export ASTROIDE_HOME=<path to ASTROIDE directory>
+
+Example: 
+
+		$ export ASTROIDE_HOME=/home/hadoop/ASTROIDE-master/
     
-- Add jars in conf/spark-defaults.conf by adding these lines:
+- Add jars in ''conf/spark-defaults.conf'' by adding these lines:
 
 	    spark.driver.extraClassPath <ASTROIDE_HOME>/libs/healpix-1.0.jar:<ASTROIDE_HOME>/libs/adql1.3.jar
     
     	spark.executor.extraClassPath <ASTROIDE_HOME>/libs/healpix-1.0.jar:<ASTROIDE_HOME>/libs/adql1.3.jar
     
-These libraries already exists in `/libs` directory, for more details please refer to:
+These libraries already exists in `libs` directory, for more details please refer to:
 
 - [Healpix library 1](http://healpix.sourceforge.net/index.php)
 
@@ -43,10 +49,10 @@ You can download example of astronomical data [here](https://github.com/MBrahem/
 
 Example:
 
-    hadoop fs -put $ASTROIDE_HOME/ExampleData/gaia.csv /data
+	$ cd $ASTROIDE_HOME/ExampleData
+	$ hdfs dfs -mkdir data
+    $ hdfs dfs -put * data/
     
-    hadoop fs -put $ASTROIDE_HOME/ExampleData/gaia.csv /data
-
 ASTROIDE allows users to use data whose coordinates are expressed according to the International Celestial Reference System [ICRS](https://hpiers.obspm.fr/icrs-pc/icrs/icrs.html)
 
 Other coordinate systems will be supported in future versions. 
@@ -59,7 +65,7 @@ Partitioning is a mandatory  process for executing astronomical queries efficien
 
 Using ASTROIDE, partitioning is executed as follows:
 
-	spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner --master <master-url> <astroide.jar> -fs <hdfs> [<schema>] <inputFile> <separator> <outputFile.parquet> <partitionSize> <healpixOrder> <name_coordinates1> <name_coordinates2> <boundariesFile>
+	$ spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner [ --master <master-url>  ]<astroide.jar> -fs <hdfs> [<schema>] <inputFile> <separator> <outputFile.parquet> <partitionSize> <healpixOrder> <name_coordinates1> <name_coordinates2> <boundariesFile>
 
 The above line can be explained as:
 
@@ -91,11 +97,14 @@ Please precise a path to a local file on your master node.
 
 Example:
 
-	spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner --master spark://UbuntuMaster:7077 $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://UbuntuMaster:9000 /data/gaia.csv "," /partitioned/gaia.parquet 32 12 ra dec $ASTROIDE_HOME/gaia.txt
+	$ hdfs dfs -mkdir data
+		
+	
+	$ spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner  $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://localhost:8020 data2/gaia.csv "," partitioned/gaia.parquet 32 12 ra dec $ASTROIDE_HOME/gaia.txt
 
 Or using schema:
 
-	spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner --master spark://UbuntuMaster:7077 $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://UbuntuMaster:9000 $ASTROIDE_HOME/ExampleData/tycho2Schema.txt /data/tycho2.gz "|" /partitioned/tycho2.parquet 32 12 ra dec $ASTROIDE_HOME/tycho2.txt
+	$ spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://localhost:8020  $ASTROIDE_HOME/ExampleData/tycho2Schema.txt data2/tycho2.gz "|" partitioned/tycho2.parquet 32 12 ra dec $ASTROIDE_HOME/tycho2.txt
 
 
 ASTROIDE retrieves partition boundaries and stores them as metadata. Note that in our case, all we need to store are the three values (n, l, u) where n is the partition number, l is
@@ -103,23 +112,26 @@ the first HEALPix cell of the partition number n and u is the last HEALPix cell 
 metadata, on HDFS and use them for future queries.
 
 Below is an example of small file with 5 partitions:
-   
+
+    $ cat $ASTROIDE_HOME/gaia.txt
+    
     [3,268313,340507]
     [0,0,86480]
-    [4,340509,95088362]
     [1,86481,178805]
     [2,178807,268308]
     
     
 The partitioned file will be stored as a parquet file that looks like: 
 
-    /partitioned/gaia.parquet/_SUCCESS
-    /partitioned/gaia.parquet/nump=0
-    /partitioned/gaia.parquet/nump=1
-    /partitioned/gaia.parquet/nump=2
-    /partitioned/gaia.parquet/nump=3
-    /partitioned/gaia.parquet/nump=4
+	$ hdfs dfs -ls partitioned/gaia.parquet/
 
+	Found 5 items
+	-rw-r--r--   1 user supergroup          0 2018-06-22 11:32 partitioned/gaia.parquet/_SUCCESS
+	drwxr-xr-x   - user supergroup          0 2018-06-22 11:32 partitioned/gaia.parquet/nump=0
+	drwxr-xr-x   - user supergroup          0 2018-06-22 11:32 partitioned/gaia.parquet/nump=1
+	drwxr-xr-x   - user supergroup          0 2018-06-22 11:32 partitioned/gaia.parquet/nump=2
+	drwxr-xr-x   - user supergroup          0 2018-06-22 11:32 partitioned/gaia.parquet/nump=3
+	
 
 ## Run astronomical queries
 
@@ -141,7 +153,7 @@ After data partitioning, you can start executing astronomical queries using ADQL
 ASTROIDE supports ADQL Standard. It includes three kinds of astronomical operators as follows. All these operators can be directly passed to astroide throught *queryFile*
 
 
-    spark-submit --class fr.uvsq.adam.astroide.executor.AstroideQueries --master <master-url> <astroide.jar> -fs <hdfs> <file1> <file2> <healpixOrder> <queryFile> <action>
+    $ spark-submit --class fr.uvsq.adam.astroide.executor.AstroideQueries [--master <master-url>] <astroide.jar> -fs <hdfs> <file1> <file2> <healpixOrder> <queryFile> <action> [<outputFile>]
     
 
 > For KNN & ConeSearch queries 
@@ -159,6 +171,9 @@ ASTROIDE supports ADQL Standard. It includes three kinds of astronomical operato
 
 
 - *action*: action that you will execute on query result (show, count, save)
+
+- *output*: output file where result can be saved
+
 
 If no action is defined, ASTROIDE will show only the execution plan.
 
@@ -180,15 +195,25 @@ If no action is defined, ASTROIDE will show only the execution plan.
 
 - *action*: action that you will execute on query result (show, count, save)
 
+- *output*: output file where result can be saved
+
 If no action is defined, ASTROIDE will show only the execution plan.
 
 
 Example:
 
-
-	spark-submit --class fr.uvsq.adam.astroide.executor.AstroideQueries --master spark://UbuntuMaster:7077 $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://UbuntuMaster:9000 /partitioned/gaia.parquet $ASTROIDE_HOME/gaia.txt 12 $ASTROIDE_HOME/ExampleQuery/conesearch.txt show
-
-
+	
+	$ spark-submit --class fr.uvsq.adam.astroide.executor.AstroideQueries $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://localhost:8020 partitioned/gaia.parquet $ASTROIDE_HOME/gaia.txt 12 $ASTROIDE_HOME/ExampleQuery/conesearch.txt show
+	
+	...
+	2018-06-22 11:43:59 INFO  DAGScheduler:54 - Job 2 finished: show at AstroideQueries.scala:87, took 0,508019 s
+	+-------------+------------------+-------------------+
+	|    source_id|                ra|                dec|
+	+-------------+------------------+-------------------+
+	|5050881701504| 44.95293718578692|0.13388443523264248|
+	|1099511693312|44.966545443077436|0.04631022905873263|
+	|1614907863552|44.951154531610996|0.10530901086672136|
+	...
 
 
 ## Queries Examples
@@ -249,7 +274,7 @@ using `PartitionFilters: [isnotnull(nump#58), (nump#58 = 0)]`
  
 ## Dataframe API
 
-A second option for executing astronomical queries is to use the Spark DataFrame API.
+A second option for executing astronomical queries is to use the Spark DataFrame API using Scala.
 
 If you need to test other queries using the DataFrame interface, you can refer to other classes in package `fr.uvsq.adam.astroide.executor` called `RunCrossMatch` `RunConeSearch` `RunKNN`
 
