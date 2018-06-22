@@ -100,11 +100,11 @@ Example:
 	$ hdfs dfs -mkdir data
 		
 	
-	$ spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner  $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://localhost:8020 data2/gaia.csv "," partitioned/gaia.parquet 32 12 ra dec $ASTROIDE_HOME/gaia.txt
+	$ spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner  $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://localhost:8020 data/gaia.csv "," partitioned/gaia.parquet 32 12 ra dec $ASTROIDE_HOME/gaia.txt
 
 Or using schema:
 
-	$ spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://localhost:8020  $ASTROIDE_HOME/ExampleData/tycho2Schema.txt data2/tycho2.gz "|" partitioned/tycho2.parquet 32 12 ra dec $ASTROIDE_HOME/tycho2.txt
+	$ spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner $ASTROIDE_HOME/ProjectJar/astroide.jar -fs hdfs://localhost:8020  $ASTROIDE_HOME/ExampleData/tycho2Schema.txt data/tycho2.gz "|" partitioned/tycho2.parquet 32 12 ra dec $ASTROIDE_HOME/tycho2.txt
 
 
 ASTROIDE retrieves partition boundaries and stores them as metadata. Note that in our case, all we need to store are the three values (n, l, u) where n is the partition number, l is
