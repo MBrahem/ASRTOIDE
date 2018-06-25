@@ -65,7 +65,7 @@ Partitioning is a mandatory  process for executing astronomical queries efficien
 
 Using ASTROIDE, partitioning is executed as follows:
 
-	$ spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner [ --master <master-url>  ]<astroide.jar> -fs <hdfs> [<schema>] <inputFile> <separator> <outputFile.parquet> <partitionSize> <healpixOrder> <name_coordinates1> <name_coordinates2> <boundariesFile>
+	$ spark-submit --class fr.uvsq.adam.astroide.executor.BuildHealpixPartitioner [ --master <master-url>  ] <astroide.jar> -fs <hdfs> [<schema>] <infile> <separator> <outfile.parquet> <partitionSize> <healpixOrder> <name_coordinates1> <name_coordinates2> <boundariesFile>
 
 The above line can be explained as:
 
@@ -74,11 +74,11 @@ The above line can be explained as:
 - *schema*: text file containing the schema of input file (separator: ","). If your data already contains the schema, you can skip this option
 
 
-- *inputFile*: path to input file on HDFS where astronomical data are stored
+- *infile*: path to input file on HDFS where astronomical data are stored
 
 - *separator*: separator used in the input file (e.g. "," or "|")
 
-- *outFile*: path to output parquet file on HDFS where astronomical data will be stored after partitioning 
+- *outfile*: path to output parquet file on HDFS where astronomical data will be stored after partitioning 
 
 - *partitionSize*: approximate partition size in MB(recommended 256MB)
 
@@ -153,7 +153,7 @@ After data partitioning, you can start executing astronomical queries using ADQL
 ASTROIDE supports ADQL Standard. It includes three kinds of astronomical operators as follows. All these operators can be directly passed to astroide throught *queryFile*
 
 
-    $ spark-submit --class fr.uvsq.adam.astroide.executor.AstroideQueries [--master <master-url>] <astroide.jar> -fs <hdfs> <file1> <file2> <healpixOrder> <queryFile> <action> [<outputFile>]
+    $ spark-submit --class fr.uvsq.adam.astroide.executor.AstroideQueries [--master <master-url>] <astroide.jar> -fs <hdfs> <file1> <file2> <healpixOrder> <queryFile> <action> [<outfile>]
     
 
 > For KNN & ConeSearch queries 
@@ -172,7 +172,7 @@ ASTROIDE supports ADQL Standard. It includes three kinds of astronomical operato
 
 - *action*: action that you will execute on query result (show, count, save)
 
-- *output*: output file where result can be saved
+- *outfile*: output file where result can be saved on HDFS
 
 
 If no action is defined, ASTROIDE will show only the execution plan.
@@ -195,7 +195,7 @@ If no action is defined, ASTROIDE will show only the execution plan.
 
 - *action*: action that you will execute on query result (show, count, save)
 
-- *output*: output file where result can be saved
+- *outfile*: output file where result can be saved on HDFS
 
 If no action is defined, ASTROIDE will show only the execution plan.
 
