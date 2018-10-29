@@ -295,14 +295,19 @@ This produces a new dataframe called output which is the result of crossmatching
 
 ## Publications
 
-1. BRAHEM, Mariem, ZEITOUNI, Karine, et YEH, Laurent. HX-MATCH:
-In-Memory Cross-Matching Algorithm for Astronomical Big Data. In :
-International Symposium on Spatial and Temporal Databases. Springer,
-Cham, 2017. p. 411-415.
+1. M. BRAHEM, K. Zeitouni, and L. Yeh. ASTROIDE: A unified astronomical big data processing
+engine over spark. IEEE Transactions on Big Data, 2018 [(Link)](http://perso.prism.uvsq.fr/users/zeitouni/papers/TBD2018_Preprint.pdf)
 
-2. BRAHEM, Mariem, LOPES, Stephane, YEH, Laurent, et al. AstroSpark:
-towards a distributed data server for big data in astronomy. In : Proceedings
-of the 3rd ACM SIGSPATIAL PhD Symposium. ACM, 2016. p. 3.
+2. M. BRAHEM, K. Zeitouni, and L. Yeh. Efficient astronomical query processing using spark. In
+In 26th ACM SIGSPATIAL International Conference on Advances in Geographic Information
+Systems, SIGSPATIAL ’18, New York, NY, USA, 2018. ACM [(Link)](http://perso.prism.uvsq.fr/users/zeitouni/papers/SIGSPATIAL2018_Preprint.pdf)
+
+3. M. BRAHEM, K. Zeitouni, and L. Yeh. HX-MATCH: in-memory cross-matching algorithm
+for astronomical big data. In Advances in Spatial and Temporal Databases - 15th International
+Symposium, SSTD 2017, Arlington, VA, USA, August 21-23, 2017, Proceedings, 2017
+
+4. M. BRAHEM, K. Zeitouni, and L. Yeh. Astrospark: towards a distributed data server for big
+data in astronomy. In Proceedings of the 3rd ACM SIGSPATIAL PhD Symposium. ACM, 2016
 
 
 
